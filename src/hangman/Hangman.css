@@ -1,6 +1,6 @@
 .root {
-	-fx-font-family: "Comic Sans MS" ;
-	-fx-background-color: lightgoldenrodyellow ;
+	-fx-font-family: "Helvetica" ;
+	-fx-background-color: lightgoldenarodyellow ;
 }
 .hangman-board {
 	-fx-background-color: white ;
