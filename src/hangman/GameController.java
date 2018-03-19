@@ -1,5 +1,6 @@
 package hangman;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class GameController {
 
@@ -42,6 +45,8 @@ public class GameController {
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
+//        .setIconImage(Toolkit.getDefaultToolkit().getImage("peach.png"));
+        Font.loadFont(Hangman.class.getResource("JosefinSans-Light.ttf").toExternalForm(), 10);
         drawHangman();
         addTextBoxListener();
         setUpStatusLabelBindings();
@@ -63,6 +68,7 @@ public class GameController {
     private void setUpStatusLabelBindings() {
 
         System.out.println("in setUpStatusLabelBindings");
+        statusLabel.setFont(Font.font("Josefin Sans", FontWeight.BOLD, 70));
         statusLabel.textProperty().bind(Bindings.format("%s", game.gameStatusProperty()));
         enterALetterLabel.textProperty().bind(Bindings.format("%s", "Enter a letter:"));
 		/*	Bindings.when(
