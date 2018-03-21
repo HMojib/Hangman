@@ -1,9 +1,16 @@
+/*TODO:
+	app icon
+	task icon
+	images for hangman
+	*/
+
 .root {
-	-fx-font-family: "Comic Sans MS" ;
-	-fx-background-color: lightgoldenrodyellow ;
+	-fx-font-family: "Josefin Sans" ;
+	-fx-font-smoothing-type: black;
+	-fx-background-color: #eceee4;
 }
 .hangman-board {
-	-fx-background-color: white ;
+	-fx-background-color: #b8c3de;
 	-fx-padding: 15px ;
 	-fx-alignment: center ;
 }
@@ -22,6 +29,29 @@
 }
 
 .status {
-	-fx-font-size: 24pt ;
-	-fx-text-fill: sandybrown ;
+	-fx-font-size: 20pt ;
+	-fx-text-fill: #000000 ;
+}
+
+GridPane {
+	-fx-padding: 50px 50px 60px 50px;
+}
+
+#statusLabel {
+	-fx-padding: 35px 0px -20px 50px;
+	-fx-font-weight: bold;
+}
+
+#enterALetterLabel {
+	-fx-padding: 0px 30px 0px 0px;
+}
+#textField {
+	-fx-background-color: #d3d3d3;
+	-fx-padding: 5px 5px 5px 15px;
+	-fx-font-size: 20pt;
+}
+#userInput {
+	-fx-padding: 0px 50px 50px 50px;
+	-fx-font-size: 16pt;
+	-fx-text-fill: #71717a;
 }
