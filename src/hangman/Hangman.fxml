@@ -20,6 +20,10 @@
                 <MenuItem text="Hangman" onAction="#newHangman"/>
                 <MenuItem text="Quit" onAction="#quit"/>
             </Menu>
+            <Menu text="Misc">
+                <MenuItem text="How to play" onAction="#howToPlay"/>
+                <MenuItem text="Credits" onAction="#credits"/>
+            </Menu>
         </MenuBar>
     </top>
 
@@ -47,6 +51,15 @@
                 <TextField fx:id="textField" GridPane.columnIndex="1">
                 </TextField>
             </GridPane>
+
+            <Label fx:id="userInput">
+                <styleClass>
+                    <String fx:value="status"/>
+                </styleClass>
+            </Label>
+
+
+
         </VBox>
     </bottom>
 

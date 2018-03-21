@@ -1,10 +1,8 @@
 /*TODO:
 	app icon
 	task icon
-	border between hangman pane and bottom pane
-	text field fix?
-	images for hangman?
-	game > about, with our info and stuff*/
+	images for hangman
+	*/
 
 .root {
 	-fx-font-family: "Josefin Sans" ;
@@ -32,7 +30,7 @@
 
 .status {
 	-fx-font-size: 20pt ;
-	-fx-text-fill: black ;
+	-fx-text-fill: #000000 ;
 }
 
 GridPane {
@@ -47,10 +45,13 @@ GridPane {
 #enterALetterLabel {
 	-fx-padding: 0px 30px 0px 0px;
 }
-
-
-
 #textField {
 	-fx-background-color: #d3d3d3;
-	-fx-padding: 5px;
+	-fx-padding: 5px 5px 5px 15px;
+	-fx-font-size: 20pt;
+}
+#userInput {
+	-fx-padding: 0px 50px 50px 50px;
+	-fx-font-size: 16pt;
+	-fx-text-fill: #71717a;
 }
