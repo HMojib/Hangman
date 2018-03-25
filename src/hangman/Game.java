@@ -8,8 +8,11 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Game {
 
@@ -21,6 +24,24 @@ public class Game {
     private int index;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
+    private List<String> dictionary = new ArrayList<String>();
+
+    private void dictReader(){
+        try{
+
+            File file = new File("src/hangman/dictionary.txt");
+            Scanner in = new Scanner(file);
+
+            while(in.hasNext()){
+                dictionary.add(in.next() + "");
+
+            }
+        } catch (FileNotFoundException ex){
+            System.out.println("You got less words than Hellen Keller!");
+        }
+
+        //System.out.println(dictionary.toString());
+    }
 
     public enum GameStatus {
         GAME_OVER {
@@ -66,6 +87,7 @@ public class Game {
             }
 
         });
+        dictReader();
         setRandomWord();
         prepTmpAnswer();
         prepLetterAndPosArray();
@@ -116,8 +138,9 @@ public class Game {
     }
 
     private void setRandomWord() {
-        int idx = (int) (Math.random() * words.length);
-        answer = words[idx].trim(); // remove new line character
+        dictReader();
+        int idx = (int) (Math.random() * dictionary.size());
+        answer = dictionary.get(idx).trim(); // remove new line character
     }
 
     private void prepTmpAnswer() {
