@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.FontWeight?>
+<?import javafx.scene.control.Button?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml">
 
@@ -50,6 +51,9 @@
                 </Label>
                 <TextField fx:id="textField" GridPane.columnIndex="1">
                 </TextField>
+            </GridPane>
+            <GridPane fx:id="buttons" hgap="10" vgap="10" alignment="CENTER">
+                <!--Buttons will be dynamically generated here.-->
             </GridPane>
 
             <Label fx:id="userInput">

@@ -12,9 +12,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -31,13 +33,10 @@ public class GameController {
 
     public GameController(Game game) {
         this.game = game;
-        executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r);
-                thread.setDaemon(true);
-                return thread;
-            }
+        executorService = Executors.newSingleThreadExecutor(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            return thread;
         });
     }
 
@@ -51,14 +50,30 @@ public class GameController {
     private Label userInput ;
     @FXML
     private TextField textField ;
+    @FXML
+    private GridPane buttons;
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
-//        .setIconImage(Toolkit.getDefaultToolkit().getImage("peach.png"));
         Font.loadFont(Hangman.class.getResource("JosefinSans-Light.ttf").toExternalForm(), 10);
         drawHangman();
         addTextBoxListener();
         setUpStatusLabelBindings();
+        initializeButtons();
+    }
+
+    private void initializeButtons() {
+//        buttons.add(new Button("test"), 0, 0);
+        int i = 0;
+        int j = 0;
+        for (char c = 'A'; c <= 'Z'; c++) {
+            String letter = String.valueOf(c);
+            if (i == 9) {
+                i = 0;
+                j++;
+            }
+            buttons.add(new LetterButton(letter), i++, j);
+        }
     }
 
     private void addTextBoxListener() {
