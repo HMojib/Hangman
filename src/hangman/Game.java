@@ -21,6 +21,7 @@ public class Game {
     private String[] letterAndPosArray;
     private String[] words = {"tree", "apple", "rock"};
     private int moves;
+    private int badMoves;
     private int index;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
@@ -121,9 +122,10 @@ public class Game {
                 }
                 else {
                     moves++;
+                    badMoves++;
                     log("bad guess");
                     return GameStatus.BAD_GUESS;
-                    //printHangman();
+//                    printHangman(badMoves);
                 }
             }
         };
@@ -212,5 +214,21 @@ public class Game {
         else {
             return null;
         }
+    }
+
+    void printHangman(int badMoves) {
+        switch(badMoves) {
+            case 1:
+
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        } //switch
     }
 }
