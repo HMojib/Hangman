@@ -22,6 +22,7 @@ public class Game {
     private int moves;
     int badMoves;
     private boolean correctGuess;
+    private boolean onStart = true;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private final ReadOnlyObjectWrapper<String> tmpAnswerShown;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
@@ -100,15 +101,16 @@ public class Game {
                     return check;
                 }
 
-                if(tmpAnswer.trim().length() == 0){
+                if(onStart){
                     log("new game");
+                    onStart = false;
                     return GameStatus.OPEN;
                 }
                 else if (correctGuess){
                     log("good guess");
                     return GameStatus.GOOD_GUESS;
                 }
-                else {
+                else{
                     moves++;
                     log("bad guess");
 
@@ -206,7 +208,14 @@ public class Game {
         gameState.setValue(!gameState.getValue());
     }
 
-    public void reset() {}
+    public void reset() {
+        answer = "";
+        tmpAnswer = "";
+        moves = 0;
+        correctGuess = false;
+        onStart = true;
+
+    }
 
     private int numOfTries() {
         return 5; // TODO, fix me
@@ -216,17 +225,21 @@ public class Game {
         System.out.println(s);
     }
 
+    public int getMoves(){
+        return moves;
+    }
+
     private GameStatus checkForWinner() {
         log("in checkForWinner");
         if(tmpAnswer.equals(answer)) {
             log("won");
             return GameStatus.WON;
         }
-        else if(moves == numOfTries()) {
+        else if(moves == numOfTries() - 1) {
             log("game over");
             return GameStatus.GAME_OVER;
         }
-        else {
+        else{
             return null;
         }
     }

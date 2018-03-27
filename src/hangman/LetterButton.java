@@ -7,7 +7,6 @@ public class LetterButton extends Button {
         super(text);
         setMinWidth(40);
         setStyle("-fx-font-size: 20");
-
     }
 
 }

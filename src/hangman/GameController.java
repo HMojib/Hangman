@@ -61,6 +61,7 @@ public class GameController {
 
 
     public void initialize() throws IOException {
+        statusLabel.setText(Game.GameStatus.OPEN.toString());
         System.out.println("in initialize");
         loadFonts();
 //        drawHangman();
@@ -98,7 +99,6 @@ public class GameController {
             buttons.add(btn, i++, j);
         }
     }
-
 
 //    private void addButtonListener() {
 //        startButton.setOnAction(new EventHandler<ActionEvent>(){

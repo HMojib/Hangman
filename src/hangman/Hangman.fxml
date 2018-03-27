@@ -18,7 +18,7 @@
     <top>
         <MenuBar>
             <Menu text="Game">
-                <MenuItem text="Hangman" onAction="#newHangman"/>
+                <MenuItem text="Start New Game" onAction="#newHangman"/>
                 <MenuItem text="Quit" onAction="#quit"/>
             </Menu>
             <Menu text="Misc">
@@ -38,7 +38,7 @@
 
     <bottom>
         <VBox>
-            <Label fx:id="guessWordLabel" alignment="CENTER">
+            <Label fx:id="guessWordLabel" alignment="center">
                 <styleClass>
                     <String fx:value="guessWord"/>
                 </styleClass>
