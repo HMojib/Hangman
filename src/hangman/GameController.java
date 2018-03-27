@@ -55,6 +55,8 @@ public class GameController {
     private Button startButton;
     @FXML
     private TextField buttonText;
+    @FXML
+    private Label guessWordLabel;
 
 
     public void initialize() throws IOException {
@@ -62,6 +64,7 @@ public class GameController {
         loadFonts();
         drawHangman();
         setUpStatusLabelBindings();
+        setUpGuessWordLabelBindings();
         initializeButtons();
     }
 
@@ -112,6 +115,11 @@ public class GameController {
 //            }
 //        }
 //    }
+
+    private void setUpGuessWordLabelBindings() {
+        System.out.println("in setUpGuessWordLabelBindings");
+        guessWordLabel.textProperty().bind(Bindings.format("%s", game.getTmpAnswerShown()));
+    }
 
     private void setUpStatusLabelBindings() {
         System.out.println("in setUpStatusLabelBindings");

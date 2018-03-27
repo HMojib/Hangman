@@ -38,6 +38,11 @@
 
     <bottom>
         <VBox>
+            <Label fx:id="guessWordLabel" alignment="CENTER">
+                <styleClass>
+                    <String fx:value="guessWord"/>
+                </styleClass>
+            </Label>
             <Label fx:id="statusLabel">
                 <styleClass>
                     <String fx:value="status"/>
@@ -52,9 +57,6 @@
                     <String fx:value="status"/>
                 </styleClass>
             </Label>
-
-
-
         </VBox>
     </bottom>
 
