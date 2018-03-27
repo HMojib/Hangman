@@ -46,11 +46,7 @@ public class GameController {
     @FXML
     private Label statusLabel ;
     @FXML
-    private Label enterALetterLabel ;
-    @FXML
     private Label userInput ;
-    @FXML
-    private TextField textField ;
     @FXML
     private GridPane buttons;
 
@@ -58,7 +54,6 @@ public class GameController {
         System.out.println("in initialize");
         loadFonts();
         drawHangman();
-        addTextBoxListener();
         setUpStatusLabelBindings();
         initializeButtons();
     }
@@ -91,26 +86,10 @@ public class GameController {
         }
     }
 
-    private void addTextBoxListener() {
-        textField.setPrefColumnCount(2);
-        textField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                if(newValue.length() > 0) {
-                    textField.setText(newValue);
-                    System.out.print(newValue);
-                    game.makeMove(newValue);
-                    textField.clear();
-                }
-            }
-        });
-    }
-
     private void setUpStatusLabelBindings() {
         System.out.println("in setUpStatusLabelBindings");
         statusLabel.setFont(Font.font("Josefin Sans", FontWeight.BOLD, 70));
         statusLabel.textProperty().bind(Bindings.format("%s", game.gameStatusProperty()));
-        enterALetterLabel.textProperty().bind(Bindings.format("%s", "Enter a letter:"));
 
 		/*	Bindings.when(
 					game.currentPlayerProperty().isNotNull()

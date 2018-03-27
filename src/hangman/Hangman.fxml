@@ -43,15 +43,6 @@
                     <String fx:value="status"/>
                 </styleClass>
             </Label>
-            <GridPane>
-                <Label fx:id="enterALetterLabel" GridPane.columnIndex="0">
-                    <styleClass>
-                        <String fx:value="status"/>
-                    </styleClass>
-                </Label>
-                <TextField fx:id="textField" GridPane.columnIndex="1">
-                </TextField>
-            </GridPane>
             <GridPane fx:id="buttons" hgap="10" vgap="10" alignment="CENTER">
                 <!--Buttons will be dynamically generated here.-->
             </GridPane>
