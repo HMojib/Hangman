@@ -19,12 +19,29 @@ public class Game {
     private String answer;
     private String tmpAnswer;
     private String[] letterAndPosArray;
-    private List<String> dictionary = new ArrayList<String>();
+    private String[] words = {"tree", "apple", "rock"};
     private int moves;
-    private int badMoves;
     private int index;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
+    private List<String> dictionary = new ArrayList<String>();
+
+    private void dictReader(){
+        try{
+
+            File file = new File("src/hangman/dictionary.txt");
+            Scanner in = new Scanner(file);
+
+            while(in.hasNext()){
+                dictionary.add(in.next() + "");
+
+            }
+        } catch (FileNotFoundException ex){
+            System.out.println("You got less words than Hellen Keller!");
+        }
+
+        //System.out.println(dictionary.toString());
+    }
 
     public enum GameStatus {
         GAME_OVER {
@@ -54,23 +71,41 @@ public class Game {
             public String toString() {
                 return "Game on, let's go!";
             }
+        },
+        SCREEN {
+            @Override
+            public String toString() {
+                return "Click start to play!";
+            }
         }
     }
 
     public Game() {
-        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
+        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.SCREEN);
+
         gameStatus.addListener(new ChangeListener<GameStatus>() {
             @Override
-            public void changed(ObservableValue<? extends GameStatus> observable,
-                                GameStatus oldValue, GameStatus newValue) {
-                if (gameStatus.get() != GameStatus.OPEN) {
-                    log("in Game: in changed");
+            public void changed(ObservableValue<? extends GameStatus> observable, GameStatus oldValue, GameStatus newValue) {
+                if (gameStatus.get() != GameStatus.SCREEN) {
+                    log("Get your game on!");
                     //currentPlayer.set(null);
                 }
             }
-
         });
-        prepDictionary();
+
+//        gameStatus.addListener(new ChangeListener<GameStatus>() {
+//            @Override
+//            public void changed(ObservableValue<? extends GameStatus> observable,
+//                                GameStatus oldValue, GameStatus newValue) {
+//                if (gameStatus.get() != GameStatus.OPEN) {
+//                    log("in Game: in changed");
+//                    //currentPlayer.set(null);
+//                }
+//            }
+//
+//        });
+
+        dictReader();
         setRandomWord();
         prepTmpAnswer();
         prepLetterAndPosArray();
@@ -104,10 +139,9 @@ public class Game {
                 }
                 else {
                     moves++;
-                    badMoves++;
                     log("bad guess");
                     return GameStatus.BAD_GUESS;
-//                    printHangman(badMoves);
+                    //printHangman();
                 }
             }
         };
@@ -121,20 +155,8 @@ public class Game {
         return gameStatus.get();
     }
 
-    // Assumes that the dictionary file is structured with 1 word per line
-    private void prepDictionary() {
-        try {
-            File file = new File("src/hangman/dictionary.txt");
-            Scanner in = new Scanner(file);
-
-            while(in.hasNext())
-                dictionary.add(in.next() + "");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Dictionary file not found.");
-        }
-    }
-
     private void setRandomWord() {
+        dictReader();
         int idx = (int) (Math.random() * dictionary.size());
         answer = dictionary.get(idx).trim(); // remove new line character
     }
@@ -208,21 +230,5 @@ public class Game {
         else {
             return null;
         }
-    }
-
-    void printHangman(int badMoves) {
-        switch(badMoves) {
-            case 1:
-
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        } //switch
     }
 }

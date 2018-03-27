@@ -49,6 +49,11 @@ public class GameController {
     private Label userInput ;
     @FXML
     private GridPane buttons;
+    @FXML
+    private Button startButton;
+    @FXML
+    private TextField buttonText;
+
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
@@ -85,6 +90,26 @@ public class GameController {
             buttons.add(btn, i++, j);
         }
     }
+
+
+//    private void addButtonListener() {
+//        startButton.setOnAction(new EventHandler<ActionEvent>(){
+//            @Override
+//            public void handle(ActionEvent event){
+//                if()
+//            }
+//        });
+//    }
+
+//    private class ButtonHandler implements EventHandler<ActionEvent> {
+//
+//        @Override
+//        public void handle(ActionEvent event) {
+//            if(event.getSource().equals(startButton)) {
+//                Game.GameStatus.OPEN;
+//            }
+//        }
+//    }
 
     private void setUpStatusLabelBindings() {
         System.out.println("in setUpStatusLabelBindings");
