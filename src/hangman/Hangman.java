@@ -17,7 +17,7 @@ public class Hangman extends Application {
         loader.setController(new GameController(game));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 600, 800);
+        Scene scene = new Scene(root, 600, 900);
         scene.getStylesheets().add(getClass().getResource("Hangman.css").toExternalForm());
 
         primaryStage.getIcons().add(new Image("file:images/peach.png"));

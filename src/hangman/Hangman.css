@@ -1,16 +1,10 @@
-/*TODO:
-	app icon
-	task icon
-	images for hangman
-	*/
-
 .root {
 	-fx-font-family: "Josefin Sans" ;
 	-fx-font-smoothing-type: black;
 	-fx-background-color: #eceee4;
 }
 .hangman-board {
-	-fx-background-color: #b8c3de;
+	-fx-background-color: #f8bf7c ;
 	-fx-padding: 15px ;
 	-fx-alignment: center ;
 }
