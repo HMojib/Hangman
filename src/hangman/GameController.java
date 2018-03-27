@@ -55,7 +55,7 @@ public class GameController {
     private Button startButton;
     @FXML
     private TextField buttonText;
-
+    @FXML
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
@@ -108,7 +108,7 @@ public class GameController {
 //        @Override
 //        public void handle(ActionEvent event) {
 //            if(event.getSource().equals(startButton)) {
-//                Game.GameStatus.OPEN;
+//                gameStatus.set(OPEN);
 //            }
 //        }
 //    }
