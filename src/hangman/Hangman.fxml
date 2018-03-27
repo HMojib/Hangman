@@ -37,8 +37,8 @@
     </center>
 
     <bottom>
-        <VBox>
-            <Label fx:id="guessWordLabel" alignment="center">
+        <VBox alignment="CENTER">
+            <Label fx:id="guessWordLabel">
                 <styleClass>
                     <String fx:value="guessWord"/>
                 </styleClass>

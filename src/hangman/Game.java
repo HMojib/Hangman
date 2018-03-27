@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class Game {
 
-    private String answer;
+    private static String answer;
     private String tmpAnswer;
     private String[] letterAndPosArray;
     private int moves;
@@ -33,7 +33,7 @@ public class Game {
         GAME_OVER {
             @Override
             public String toString() {
-                return "Game over!";
+                return "Game over! The word was " + answer + "!";
             }
         },
         BAD_GUESS {
