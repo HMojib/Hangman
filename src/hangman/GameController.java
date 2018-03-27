@@ -12,6 +12,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
@@ -20,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -32,8 +35,7 @@ import javax.swing.*;
 public class GameController {
 
     private final ExecutorService executorService;
-    Game game;
-    static int badMoves;
+    static Game game;
 
     public GameController(Game game) {
         this.game = game;
@@ -45,7 +47,7 @@ public class GameController {
     }
 
     @FXML
-    private VBox board ;
+    private HBox board ;
     @FXML
     private Label statusLabel ;
     @FXML
@@ -63,13 +65,47 @@ public class GameController {
     public void initialize() throws IOException {
         statusLabel.setText(Game.GameStatus.OPEN.toString());
         System.out.println("in initialize");
+        setUpImagesOnBoard();
         loadFonts();
-//        drawHangman();
         setUpStatusLabelBindings();
         setUpGuessWordLabelBindings();
         initializeButtons();
 
-        badMoves = 0;
+    }
+
+    private void setUpImagesOnBoard() {
+
+        ImageView imv = new ImageView();
+        Image image = new Image("file:resources/images/bigRightLeg.jpg", 100, 250, true, true);
+        imv.setImage(image);
+        board.getChildren().add(imv);
+
+        ImageView imv2 = new ImageView();
+        Image image2 = new Image("file:resources/images/bigRightArm.jpg", 100, 250, true, true);
+        imv2.setImage(image2);
+        board.getChildren().add(imv2);
+
+        ImageView imv3 = new ImageView();
+        Image image3 = new Image("file:resources/images/bigHead.jpg", 100, 250, true, true);
+        imv3.setImage(image3);
+        board.getChildren().add(imv3);
+
+        ImageView imv4 = new ImageView();
+        Image image4 = new Image("file:resources/images/bigLeftArm.jpg", 100, 250, true, true);
+        imv4.setImage(image4);
+        board.getChildren().add(imv4);
+
+        ImageView imv5 = new ImageView();
+        Image image5 = new Image("file:resources/images/bigLeftLeg.jpg", 100, 250, true, true);
+        imv5.setImage(image5);
+        board.getChildren().add(imv5);
+
+        imv.setVisible(false);
+        imv2.setVisible(false);
+        imv3.setVisible(false);
+        imv4.setVisible(false);
+        imv5.setVisible(false);
+
     }
 
     private void loadFonts() {
@@ -140,40 +176,41 @@ public class GameController {
 		*/
     }
 
-    void drawHangman() {
-        badMoves++;
-        ImageView imv = new ImageView();
-        Image image = new Image("file:resources/images/bigRightLeg.jpg", 100, 250, true, true);
-        imv.setImage(image);
-        board.getChildren().add(imv);
+    void drawHangman(int badMoves) {
+
+        /*drawHangman toggles visibility of images to true
+            when player makes a bad guess.
+
+            With each increment in the number of bad moves,
+            another image has their visibility set to true, showing on the board.
+         */
+
+        Node node = null;
 
         switch(badMoves) {
             case 1:
-                board.getChildren().add(imv);
+                node = board.getChildren().get(badMoves - 1);
+                node.setVisible(true);
                 break;
 
             case 2:
-                image = new Image("file:resources/images/bigLeftLeg.jpg", 100, 250, true, true);
-                imv.setImage(image);
-                board.getChildren().add(imv);
+                node = board.getChildren().get(badMoves - 1);
+                node.setVisible(true);
                 break;
 
             case 3:
-                image = new Image("file:resources/images/bigRightArm.jpg", 100, 250, true, true);
-                imv.setImage(image);
-                board.getChildren().add(imv);
+                node = board.getChildren().get(badMoves - 1);
+                node.setVisible(true);
                 break;
 
             case 4:
-                image = new Image("file:resources/images/bigLeftArm.jpg", 100, 250, true, true);
-                imv.setImage(image);
-                board.getChildren().add(imv);
+                node = board.getChildren().get(badMoves - 1);
+                node.setVisible(true);
                 break;
 
             case 5:
-                image = new Image("file:resources/images/bigHead.jpg", 100, 250, true, true);
-                imv.setImage(image);
-                board.getChildren().add(imv);
+                node = board.getChildren().get(badMoves - 1);
+                node.setVisible(true);
                 break;
         }
 
