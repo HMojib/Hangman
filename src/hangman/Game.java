@@ -19,29 +19,12 @@ public class Game {
     private String answer;
     private String tmpAnswer;
     private String[] letterAndPosArray;
-    private String[] words = {"tree", "apple", "rock"};
     private int moves;
     private int index;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
     private List<String> dictionary = new ArrayList<String>();
 
-    private void dictReader(){
-        try{
-
-            File file = new File("src/hangman/dictionary.txt");
-            Scanner in = new Scanner(file);
-
-            while(in.hasNext()){
-                dictionary.add(in.next() + "");
-
-            }
-        } catch (FileNotFoundException ex){
-            System.out.println("You got less words than Hellen Keller!");
-        }
-
-        //System.out.println(dictionary.toString());
-    }
 
     public enum GameStatus {
         GAME_OVER {
@@ -105,7 +88,7 @@ public class Game {
 //
 //        });
 
-        dictReader();
+        prepDictionary();
         setRandomWord();
         prepTmpAnswer();
         prepLetterAndPosArray();
@@ -156,9 +139,25 @@ public class Game {
     }
 
     private void setRandomWord() {
-        dictReader();
+        prepDictionary();
         int idx = (int) (Math.random() * dictionary.size());
         answer = dictionary.get(idx).trim(); // remove new line character
+    }
+
+    private void prepDictionary(){
+        try{
+
+            File file = new File("src/hangman/dictionary.txt");
+            Scanner in = new Scanner(file);
+
+            while(in.hasNext())
+                dictionary.add(in.next() + "");
+
+        } catch (FileNotFoundException ex){
+            System.out.println("Dictionary File Not Found!");
+        }
+
+        //System.out.println(dictionary.toString());
     }
 
     private void prepTmpAnswer() {
