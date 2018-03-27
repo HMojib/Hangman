@@ -54,39 +54,23 @@ public class Game {
             public String toString() {
                 return "Game on, let's go!";
             }
-        },
-        SCREEN {
-            @Override
-            public String toString() {
-                return "Click start to play!";
-            }
         }
     }
 
     public Game() {
-        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.SCREEN);
+        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
 
         gameStatus.addListener(new ChangeListener<GameStatus>() {
             @Override
-            public void changed(ObservableValue<? extends GameStatus> observable, GameStatus oldValue, GameStatus newValue) {
-                if (gameStatus.get() != GameStatus.SCREEN) {
-                    log("Get your game on!");
+            public void changed(ObservableValue<? extends GameStatus> observable,
+                                GameStatus oldValue, GameStatus newValue) {
+                if (gameStatus.get() != GameStatus.OPEN) {
+                    log("in Game: in changed");
                     //currentPlayer.set(null);
                 }
             }
-        });
 
-//        gameStatus.addListener(new ChangeListener<GameStatus>() {
-//            @Override
-//            public void changed(ObservableValue<? extends GameStatus> observable,
-//                                GameStatus oldValue, GameStatus newValue) {
-//                if (gameStatus.get() != GameStatus.OPEN) {
-//                    log("in Game: in changed");
-//                    //currentPlayer.set(null);
-//                }
-//            }
-//
-//        });
+        });
 
         prepDictionary();
         setRandomWord();
