@@ -55,11 +55,21 @@ public class GameController {
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
-        Font.loadFont(Hangman.class.getResource("JosefinSans-Light.ttf").toExternalForm(), 10);
+        loadFonts();
         drawHangman();
         addTextBoxListener();
         setUpStatusLabelBindings();
         initializeButtons();
+    }
+
+    private void loadFonts() {
+        String baseFontPath = "file:fonts/JosefinSans-";
+        int baseFontSize = 10;
+        Font.loadFont(baseFontPath + "Bold.ttf", baseFontSize);
+        Font.loadFont(baseFontPath + "Light.ttf", baseFontSize);
+        Font.loadFont(baseFontPath + "Regular.ttf", baseFontSize);
+        Font.loadFont(baseFontPath + "SemiBold.ttf", baseFontSize);
+        Font.loadFont(baseFontPath + "Thin.ttf", baseFontSize);
     }
 
     private void initializeButtons() {
