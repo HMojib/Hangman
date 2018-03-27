@@ -13,6 +13,7 @@
 <?import javafx.scene.text.FontWeight?>
 <?import javafx.scene.control.Button?>
 
+<?import javafx.scene.layout.HBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml">
 
     <top>
@@ -29,11 +30,11 @@
     </top>
 
     <center>
-        <VBox fx:id="board">
+        <HBox fx:id="board">
             <styleClass>
                 <String fx:value="hangman-board"/>
             </styleClass>
-        </VBox>
+        </HBox>
     </center>
 
     <bottom>

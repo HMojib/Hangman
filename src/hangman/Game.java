@@ -115,12 +115,16 @@ public class Game {
                     log("bad guess");
 
 //                    TODO: how do i call drawHangman() in GameController.java
-//                    GameController.drawHangman();
+                    printHangman(moves);
                     return GameStatus.BAD_GUESS;
                 }
             }
         };
         gameStatus.bind(gameStatusBinding);
+    }
+
+    void printHangman(int moves) {
+//        GameController.drawHangman(moves);
     }
 
     public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
