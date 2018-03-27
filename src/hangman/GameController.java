@@ -139,7 +139,7 @@ public class GameController {
 
     private void drawHangman() {
         ImageView imv = new ImageView();
-        Image image = new Image("file:resources/images/bigHead.jpg");
+        Image image = new Image("file:resources/images/bigHead.jpg", 250, 250, true, true);
         imv.setImage(image);
         board.getChildren().add(imv);
     }
