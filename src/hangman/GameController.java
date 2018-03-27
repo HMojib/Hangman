@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -128,20 +130,10 @@ public class GameController {
     }
 
     private void drawHangman() {
-
-//        Line line = new Line();
-//        line.setStartX(25.0f);
-//        line.setStartY(0.0f);
-//        line.setEndX(25.0f);
-//        line.setEndY(25.0f);
-//
-//        Circle c = new Circle();
-//        c.setRadius(10);
-
-//        board.getChildren().add(line);
-//        board.getChildren().add(c);
-
-
+        ImageView imv = new ImageView();
+        Image image = new Image("file:resources/images/bigHead.jpg");
+        imv.setImage(image);
+        board.getChildren().add(imv);
     }
 
     @FXML
