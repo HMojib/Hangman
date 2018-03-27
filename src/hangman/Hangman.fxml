@@ -9,55 +9,43 @@
 <?import java.lang.String?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.FontWeight?>
-<?import javafx.scene.control.Button?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml">
+	
+	<top>
+		<MenuBar>
+			<Menu text="Game">
+				<MenuItem text="Hangman" onAction="#newHangman"/>
+				<MenuItem text="Quit" onAction="#quit"/>
+			</Menu>
+		</MenuBar>
+	</top>
 
-    <top>
-        <MenuBar>
-            <Menu text="Game">
-                <MenuItem text="Start New Game" onAction="#newHangman"/>
-                <MenuItem text="Quit" onAction="#quit"/>
-            </Menu>
-            <Menu text="Misc">
-                <MenuItem text="How to play" onAction="#howToPlay"/>
-                <MenuItem text="Credits" onAction="#credits"/>
-            </Menu>
-        </MenuBar>
-    </top>
-
-    <center>
-        <VBox fx:id="board">
-            <styleClass>
-                <String fx:value="hangman-board"/>
-            </styleClass>
-        </VBox>
-    </center>
-
-    <bottom>
-        <VBox alignment="CENTER">
-            <Label fx:id="guessWordLabel">
-                <styleClass>
-                    <String fx:value="guessWord"/>
-                </styleClass>
-            </Label>
-            <Label fx:id="statusLabel">
-                <styleClass>
-                    <String fx:value="status"/>
-                </styleClass>
-            </Label>
-            <GridPane fx:id="buttons" hgap="10" vgap="10" alignment="CENTER">
-                <!--Buttons will be dynamically generated here.-->
-            </GridPane>
-
-            <Label fx:id="userInput">
-                <styleClass>
-                    <String fx:value="status"/>
-                </styleClass>
-            </Label>
-        </VBox>
-    </bottom>
+	<center>
+		<VBox fx:id="board">
+			<styleClass>
+				<String fx:value="hangman-board"/>
+			</styleClass>
+		</VBox>
+	</center>
+	
+	<bottom>
+		<VBox>
+			<Label fx:id="statusLabel">
+				<styleClass>
+					<String fx:value="status"/>
+				</styleClass>
+			</Label>
+			<GridPane>
+				<Label fx:id="enterALetterLabel" GridPane.columnIndex="0">
+					<styleClass>
+						<String fx:value="status"/>
+					</styleClass>
+				</Label>
+				<TextField fx:id="textField" GridPane.columnIndex="1">
+				</TextField>
+			</GridPane>
+		</VBox>
+	</bottom>
 
 </BorderPane>

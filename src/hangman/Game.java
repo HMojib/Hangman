@@ -8,239 +8,186 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
 
-    private static String answer;
-    private String tmpAnswer;
-    private String[] letterAndPosArray;
-    private int moves;
-    int badMoves;
-    private boolean correctGuess;
-    private boolean onStart = true;
-    private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
-    private final ReadOnlyObjectWrapper<String> tmpAnswerShown;
-    private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
-    private List<String> dictionary = new ArrayList<String>();
+	private String answer;
+	private String tmpAnswer;
+	private String[] letterAndPosArray;
+	private String[] words;
+	private int moves;
+	private int index;
+	private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
+	private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
 
+	public enum GameStatus {
+		GAME_OVER {
+			@Override
+			public String toString() {
+				return "Game over!";
+			}
+		},
+		BAD_GUESS {
+			@Override
+			public String toString() { return "Bad guess..."; }
+		},
+		GOOD_GUESS {
+			@Override
+			public String toString() {
+				return "Good guess!";
+			}
+		},
+		WON {
+			@Override
+			public String toString() {
+				return "You won!";
+			}
+		},
+		OPEN {
+			@Override
+			public String toString() {
+				return "Game on, let's go!";
+			}
+		}
+	}
 
-    public enum GameStatus {
-        GAME_OVER {
-            @Override
-            public String toString() {
-                return "Game over! The word was " + answer + "!";
-            }
-        },
-        BAD_GUESS {
-            @Override
-            public String toString() { return "Bad guess..."; }
-        },
-        GOOD_GUESS {
-            @Override
-            public String toString() {
-                return "Good guess!";
-            }
-        },
-        WON {
-            @Override
-            public String toString() {
-                return "You won!";
-            }
-        },
-        OPEN {
-            @Override
-            public String toString() {
-                return "Game on, let's go!";
-            }
-        }
-    }
+	public Game() {
+		gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
+		gameStatus.addListener(new ChangeListener<GameStatus>() {
+			@Override
+			public void changed(ObservableValue<? extends GameStatus> observable,
+								GameStatus oldValue, GameStatus newValue) {
+				if (gameStatus.get() != GameStatus.OPEN) {
+					log("in Game: in changed");
+					//currentPlayer.set(null);
+				}
+			}
 
-    public Game() {
-        tmpAnswerShown = new ReadOnlyObjectWrapper<String>(this, "tmpAnswerShown", "");
-        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
-        badMoves = 0;
+		});
+		setRandomWord();
+		prepTmpAnswer();
+		prepLetterAndPosArray();
+		moves = 0;
 
-        gameStatus.addListener(new ChangeListener<GameStatus>() {
-            @Override
-            public void changed(ObservableValue<? extends GameStatus> observable,
-                                GameStatus oldValue, GameStatus newValue) {
-                if (gameStatus.get() != GameStatus.OPEN) {
-                    log("in Game: in changed");
-                    //currentPlayer.set(null);
-                }
-            }
+		gameState.setValue(false); // initial state
+		createGameStatusBinding();
+	}
 
-        });
+	private void createGameStatusBinding() {
+		List<Observable> allObservableThings = new ArrayList<>();
+		ObjectBinding<GameStatus> gameStatusBinding = new ObjectBinding<GameStatus>() {
+			{
+				super.bind(gameState);
+			}
+			@Override
+			public GameStatus computeValue() {
+				log("in computeValue");
+				GameStatus check = checkForWinner(index);
+				if(check != null ) {
+					return check;
+				}
 
-        prepDictionary();
-        setRandomWord();
-        prepTmpAnswer();
-        prepLetterAndPosArray();
-        moves = 0;
+				if(tmpAnswer.trim().length() == 0){
+					log("new game");
+					return GameStatus.OPEN;
+				}
+				else if (index != -1){
+					log("good guess");
+					return GameStatus.GOOD_GUESS;
+				}
+				else {
+					moves++;
+					log("bad guess");
+					return GameStatus.BAD_GUESS;
+					//printHangman();
+				}
+			}
+		};
+		gameStatus.bind(gameStatusBinding);
+	}
 
-        gameState.setValue(false); // initial state
-        createGameStatusBinding();
-    }
+	public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
+		return gameStatus.getReadOnlyProperty();
+	}
+	public GameStatus getGameStatus() {
+		return gameStatus.get();
+	}
 
-    void createGameStatusBinding() {
-        List<Observable> allObservableThings = new ArrayList<>();
-        ObjectBinding<GameStatus> gameStatusBinding = new ObjectBinding<GameStatus>() {
-            {
-                super.bind(gameState);
-            }
-            @Override
-            public GameStatus computeValue() {
-                log("in computeValue");
-                GameStatus check = checkForWinner();
-                if(check != null ) {
-                    return check;
-                }
+	private void setRandomWord() {
+		//int idx = (int) (Math.random() * words.length);
+		answer = "apple";//words[idx].trim(); // remove new line character
+	}
 
-                if(onStart){
-                    log("new game");
-                    onStart = false;
-                    return GameStatus.OPEN;
-                }
-                else if (correctGuess){
-                    log("good guess");
-                    return GameStatus.GOOD_GUESS;
-                }
-                else{
-                    moves++;
-                    log("bad guess");
+	private void prepTmpAnswer() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < answer.length(); i++) {
+			sb.append(" ");
+		}
+		tmpAnswer = sb.toString();
+	}
 
-//                    TODO: how do i call drawHangman() in GameController.java
-//                    GameController.drawHangman();
-                    return GameStatus.BAD_GUESS;
-                }
-            }
-        };
-        gameStatus.bind(gameStatusBinding);
-    }
+	private void prepLetterAndPosArray() {
+		letterAndPosArray = new String[answer.length()];
+		for(int i = 0; i < answer.length(); i++) {
+			letterAndPosArray[i] = answer.substring(i,i+1);
+		}
+	}
 
-    public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
-        return gameStatus.getReadOnlyProperty();
-    }
-    public ReadOnlyObjectProperty<String> getTmpAnswerShown() {
-        return tmpAnswerShown;
-    }
-    public GameStatus getGameStatus() {
-        return gameStatus.get();
-    }
+	private int getValidIndex(String input) {
+		int index = -1;
+		for(int i = 0; i < letterAndPosArray.length; i++) {
+			if(letterAndPosArray[i].equals(input)) {
+				index = i;
+				letterAndPosArray[i] = "";
+				break;
+			}
+		}
+		return index;
+	}
 
-    private void setRandomWord() {
-        prepDictionary();
-        int idx = (int) (Math.random() * dictionary.size());
-        answer = dictionary.get(idx).trim(); // remove new line character
-    }
+	private int update(String input) {
+		int index = getValidIndex(input);
+		if(index != -1) {
+			StringBuilder sb = new StringBuilder(tmpAnswer);
+			sb.setCharAt(index, input.charAt(0));
+			tmpAnswer = sb.toString();
+		}
+		return index;
+	}
 
-    private void prepDictionary(){
-        try{
+	private static void drawHangmanFrame() {}
 
-            File file = new File("resources/dictionary.txt");
-            Scanner in = new Scanner(file);
+	public void makeMove(String letter) {
+		log("\nin makeMove: " + letter);
+		index = update(letter);
+		// this will toggle the state of the game
+		gameState.setValue(!gameState.getValue());
+	}
 
-            while(in.hasNext())
-                dictionary.add(in.next() + "");
+	public void reset() {}
 
-        } catch (FileNotFoundException ex){
-            System.out.println("Dictionary File Not Found!");
-        }
+	private int numOfTries() {
+		return 5; // TODO, fix me
+	}
 
-        //System.out.println(dictionary.toString());
-    }
+	public static void log(String s) {
+		System.out.println(s);
+	}
 
-    private void prepTmpAnswer() {
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < answer.length(); i++) {
-            sb.append("_");
-        }
-        updateTmpAnswer(sb.toString());
-    }
-
-    private void prepLetterAndPosArray() {
-        letterAndPosArray = new String[answer.length()];
-        for(int i = 0; i < answer.length(); i++) {
-            letterAndPosArray[i] = answer.substring(i,i+1);
-        }
-    }
-
-    private ArrayList<Integer> getValidIndices(String input) {
-        correctGuess = false;
-        ArrayList<Integer> indices = new ArrayList<>();
-        for(int i = 0; i < letterAndPosArray.length; i++) {
-            if(letterAndPosArray[i].equals(input)) {
-                indices.add(i);
-                letterAndPosArray[i] = "";
-                correctGuess = true;
-            }
-        }
-        return indices;
-    }
-
-    private void updateTmpAnswer(String tmp) {
-        tmpAnswer = tmp;
-        tmpAnswerShown.set(tmp.replace(""," ").trim());
-    }
-
-    private void update(String input) {
-        ArrayList<Integer> indices = getValidIndices(input);
-        if (correctGuess) {
-            StringBuilder sb = new StringBuilder(tmpAnswer);
-            for (int index : indices) {
-                sb.setCharAt(index, input.charAt(0));
-            }
-            updateTmpAnswer(sb.toString());
-        }
-    }
-
-    private static void drawHangmanFrame() {}
-
-    public void makeMove(String letter) {
-        log("\nin makeMove: " + letter);
-        update(letter);
-        // this will toggle the state of the game
-        gameState.setValue(!gameState.getValue());
-    }
-
-    public void reset() {
-        answer = "";
-        tmpAnswer = "";
-        moves = 0;
-        correctGuess = false;
-        onStart = true;
-
-    }
-
-    private int numOfTries() {
-        return 5; // TODO, fix me
-    }
-
-    public static void log(String s) {
-        System.out.println(s);
-    }
-
-    public int getMoves(){
-        return moves;
-    }
-
-    private GameStatus checkForWinner() {
-        log("in checkForWinner");
-        if(tmpAnswer.equals(answer)) {
-            log("won");
-            return GameStatus.WON;
-        }
-        else if(moves == numOfTries() - 1) {
-            log("game over");
-            return GameStatus.GAME_OVER;
-        }
-        else{
-            return null;
-        }
-    }
+	private GameStatus checkForWinner(int status) {
+		log("in checkForWinner");
+		if(tmpAnswer.equals(answer)) {
+			log("won");
+			return GameStatus.WON;
+		}
+		else if(moves == numOfTries()) {
+			log("game over");
+			return GameStatus.GAME_OVER;
+		}
+		else {
+			return null;
+		}
+	}
 }
