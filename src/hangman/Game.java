@@ -25,6 +25,7 @@ public class Game {
     private int index;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
+    //static gamed
 
     public enum GameStatus {
         GAME_OVER {
@@ -213,7 +214,6 @@ public class Game {
     void printHangman(int badMoves) {
         switch(badMoves) {
             case 1:
-
                 break;
             case 2:
                 break;

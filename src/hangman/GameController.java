@@ -53,6 +53,11 @@ public class GameController {
     private TextField textField ;
     @FXML
     private GridPane buttons;
+    @FXML
+    private Button startButton;
+    @FXML
+    private TextField buttonText;
+
 
     public void initialize() throws IOException {
         System.out.println("in initialize");
@@ -91,6 +96,7 @@ public class GameController {
         }
     }
 
+
     private void addTextBoxListener() {
         textField.setPrefColumnCount(2);
         textField.textProperty().addListener(new ChangeListener<String>() {
@@ -105,6 +111,25 @@ public class GameController {
             }
         });
     }
+
+//    private void addButtonListener() {
+//        startButton.setOnAction(new EventHandler<ActionEvent>(){
+//            @Override
+//            public void handle(ActionEvent event){
+//                if()
+//            }
+//        });
+//    }
+
+//    private class ButtonHandler implements EventHandler<ActionEvent> {
+//
+//        @Override
+//        public void handle(ActionEvent event) {
+//            if(event.getSource().equals(startButton)) {
+//                Game.GameStatus.OPEN;
+//            }
+//        }
+//    }
 
     private void setUpStatusLabelBindings() {
         System.out.println("in setUpStatusLabelBindings");
