@@ -147,7 +147,7 @@ public class Game {
     private void prepDictionary(){
         try{
 
-            File file = new File("src/hangman/dictionary.txt");
+            File file = new File("resources/dictionary.txt");
             Scanner in = new Scanner(file);
 
             while(in.hasNext())

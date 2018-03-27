@@ -64,7 +64,7 @@ public class GameController {
     }
 
     private void loadFonts() {
-        String baseFontPath = "file:fonts/JosefinSans-";
+        String baseFontPath = "file:resources/fonts/JosefinSans-";
         int baseFontSize = 10;
         Font.loadFont(baseFontPath + "Bold.ttf", baseFontSize);
         Font.loadFont(baseFontPath + "Light.ttf", baseFontSize);
