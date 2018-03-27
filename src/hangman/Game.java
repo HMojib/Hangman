@@ -20,8 +20,9 @@ public class Game {
     private String tmpAnswer;
     private String[] letterAndPosArray;
     private int moves;
-    private int index;
+    private boolean correctGuess;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
+    private final ReadOnlyObjectWrapper<String> tmpAnswerShown;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
     private List<String> dictionary = new ArrayList<String>();
 
@@ -64,15 +65,13 @@ public class Game {
     }
 
     public Game() {
+        tmpAnswerShown = new ReadOnlyObjectWrapper<String>(this, "tmpAnswerShown", "");
         gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.SCREEN);
 
-        gameStatus.addListener(new ChangeListener<GameStatus>() {
-            @Override
-            public void changed(ObservableValue<? extends GameStatus> observable, GameStatus oldValue, GameStatus newValue) {
-                if (gameStatus.get() != GameStatus.SCREEN) {
-                    log("Get your game on!");
-                    //currentPlayer.set(null);
-                }
+        gameStatus.addListener((observable, oldValue, newValue) -> {
+            if (gameStatus.get() != GameStatus.SCREEN) {
+                log("Get your game on!");
+                //currentPlayer.set(null);
             }
         });
 
@@ -107,7 +106,7 @@ public class Game {
             @Override
             public GameStatus computeValue() {
                 log("in computeValue");
-                GameStatus check = checkForWinner(index);
+                GameStatus check = checkForWinner();
                 if(check != null ) {
                     return check;
                 }
@@ -116,7 +115,7 @@ public class Game {
                     log("new game");
                     return GameStatus.OPEN;
                 }
-                else if (index != -1){
+                else if (correctGuess){
                     log("good guess");
                     return GameStatus.GOOD_GUESS;
                 }
@@ -134,6 +133,11 @@ public class Game {
     public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
         return gameStatus.getReadOnlyProperty();
     }
+
+    public ReadOnlyObjectProperty<String> getTmpAnswerShown() {
+        return tmpAnswerShown;
+    }
+
     public GameStatus getGameStatus() {
         return gameStatus.get();
     }
@@ -147,7 +151,7 @@ public class Game {
     private void prepDictionary(){
         try{
 
-            File file = new File("resources/dictionary.txt");
+            File file = new File("resources/test.txt");
             Scanner in = new Scanner(file);
 
             while(in.hasNext())
@@ -163,9 +167,9 @@ public class Game {
     private void prepTmpAnswer() {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < answer.length(); i++) {
-            sb.append(" ");
+            sb.append("_");
         }
-        tmpAnswer = sb.toString();
+        updateTmpAnswer(sb.toString());
     }
 
     private void prepLetterAndPosArray() {
@@ -175,33 +179,40 @@ public class Game {
         }
     }
 
-    private int getValidIndex(String input) {
-        int index = -1;
+    private ArrayList<Integer> getValidIndices(String input) {
+        correctGuess = false;
+        ArrayList<Integer> indices = new ArrayList<>();
         for(int i = 0; i < letterAndPosArray.length; i++) {
             if(letterAndPosArray[i].equals(input)) {
-                index = i;
+                indices.add(i);
                 letterAndPosArray[i] = "";
-                break;
+                correctGuess = true;
             }
         }
-        return index;
+        return indices;
     }
 
-    private int update(String input) {
-        int index = getValidIndex(input);
-        if(index != -1) {
+    private void updateTmpAnswer(String tmp) {
+        tmpAnswer = tmp;
+        tmpAnswerShown.set(tmp.replace(""," ").trim());
+    }
+
+    private void update(String input) {
+        ArrayList<Integer> indices = getValidIndices(input);
+        if (correctGuess) {
             StringBuilder sb = new StringBuilder(tmpAnswer);
-            sb.setCharAt(index, input.charAt(0));
-            tmpAnswer = sb.toString();
+            for (int index : indices) {
+                sb.setCharAt(index, input.charAt(0));
+            }
+            updateTmpAnswer(sb.toString());
         }
-        return index;
     }
 
     private static void drawHangmanFrame() {}
 
     public void makeMove(String letter) {
         log("\nin makeMove: " + letter);
-        index = update(letter);
+        update(letter);
         // this will toggle the state of the game
         gameState.setValue(!gameState.getValue());
     }
@@ -216,7 +227,7 @@ public class Game {
         System.out.println(s);
     }
 
-    private GameStatus checkForWinner(int status) {
+    private GameStatus checkForWinner() {
         log("in checkForWinner");
         if(tmpAnswer.equals(answer)) {
             log("won");
