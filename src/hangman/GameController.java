@@ -32,7 +32,8 @@ import javax.swing.*;
 public class GameController {
 
     private final ExecutorService executorService;
-    private final Game game;
+    Game game;
+    static int badMoves;
 
     public GameController(Game game) {
         this.game = game;
@@ -62,10 +63,12 @@ public class GameController {
     public void initialize() throws IOException {
         System.out.println("in initialize");
         loadFonts();
-        drawHangman();
+//        drawHangman();
         setUpStatusLabelBindings();
         setUpGuessWordLabelBindings();
         initializeButtons();
+
+        badMoves = 0;
     }
 
     private void loadFonts() {
@@ -137,11 +140,43 @@ public class GameController {
 		*/
     }
 
-    private void drawHangman() {
+    void drawHangman() {
+        badMoves++;
         ImageView imv = new ImageView();
-        Image image = new Image("file:resources/images/bigHead.jpg", 250, 250, true, true);
+        Image image = new Image("file:resources/images/bigRightLeg.jpg", 100, 250, true, true);
         imv.setImage(image);
         board.getChildren().add(imv);
+
+        switch(badMoves) {
+            case 1:
+                board.getChildren().add(imv);
+                break;
+
+            case 2:
+                image = new Image("file:resources/images/bigLeftLeg.jpg", 100, 250, true, true);
+                imv.setImage(image);
+                board.getChildren().add(imv);
+                break;
+
+            case 3:
+                image = new Image("file:resources/images/bigRightArm.jpg", 100, 250, true, true);
+                imv.setImage(image);
+                board.getChildren().add(imv);
+                break;
+
+            case 4:
+                image = new Image("file:resources/images/bigLeftArm.jpg", 100, 250, true, true);
+                imv.setImage(image);
+                board.getChildren().add(imv);
+                break;
+
+            case 5:
+                image = new Image("file:resources/images/bigHead.jpg", 100, 250, true, true);
+                imv.setImage(image);
+                board.getChildren().add(imv);
+                break;
+        }
+
     }
 
     @FXML

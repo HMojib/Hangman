@@ -20,6 +20,7 @@ public class Game {
     private String tmpAnswer;
     private String[] letterAndPosArray;
     private int moves;
+    int badMoves;
     private boolean correctGuess;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
     private final ReadOnlyObjectWrapper<String> tmpAnswerShown;
@@ -61,6 +62,7 @@ public class Game {
     public Game() {
         tmpAnswerShown = new ReadOnlyObjectWrapper<String>(this, "tmpAnswerShown", "");
         gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
+        badMoves = 0;
 
         gameStatus.addListener(new ChangeListener<GameStatus>() {
             @Override
@@ -84,7 +86,7 @@ public class Game {
         createGameStatusBinding();
     }
 
-    private void createGameStatusBinding() {
+    void createGameStatusBinding() {
         List<Observable> allObservableThings = new ArrayList<>();
         ObjectBinding<GameStatus> gameStatusBinding = new ObjectBinding<GameStatus>() {
             {
@@ -109,8 +111,10 @@ public class Game {
                 else {
                     moves++;
                     log("bad guess");
+
+//                    TODO: how do i call drawHangman() in GameController.java
+//                    GameController.drawHangman();
                     return GameStatus.BAD_GUESS;
-                    //printHangman();
                 }
             }
         };
