@@ -20,7 +20,7 @@ public class Hangman extends Application {
         Scene scene = new Scene(root, 600, 900);
         scene.getStylesheets().add(getClass().getResource("Hangman.css").toExternalForm());
 
-        primaryStage.getIcons().add(new Image("file:images/peach.png"));
+        primaryStage.getIcons().add(new Image("file:resources/images/peach.png"));
         primaryStage.setTitle("Hangman");
         primaryStage.setScene(scene);
         primaryStage.show();
