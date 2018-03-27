@@ -55,37 +55,24 @@ public class Game {
             public String toString() {
                 return "Game on, let's go!";
             }
-        },
-        SCREEN {
-            @Override
-            public String toString() {
-                return "Click start to play!";
-            }
         }
     }
 
     public Game() {
         tmpAnswerShown = new ReadOnlyObjectWrapper<String>(this, "tmpAnswerShown", "");
-        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.SCREEN);
+        gameStatus = new ReadOnlyObjectWrapper<GameStatus>(this, "gameStatus", GameStatus.OPEN);
 
-        gameStatus.addListener((observable, oldValue, newValue) -> {
-            if (gameStatus.get() != GameStatus.SCREEN) {
-                log("Get your game on!");
-                //currentPlayer.set(null);
+        gameStatus.addListener(new ChangeListener<GameStatus>() {
+            @Override
+            public void changed(ObservableValue<? extends GameStatus> observable,
+                                GameStatus oldValue, GameStatus newValue) {
+                if (gameStatus.get() != GameStatus.OPEN) {
+                    log("in Game: in changed");
+                    //currentPlayer.set(null);
+                }
             }
-        });
 
-//        gameStatus.addListener(new ChangeListener<GameStatus>() {
-//            @Override
-//            public void changed(ObservableValue<? extends GameStatus> observable,
-//                                GameStatus oldValue, GameStatus newValue) {
-//                if (gameStatus.get() != GameStatus.OPEN) {
-//                    log("in Game: in changed");
-//                    //currentPlayer.set(null);
-//                }
-//            }
-//
-//        });
+        });
 
         prepDictionary();
         setRandomWord();
@@ -133,11 +120,9 @@ public class Game {
     public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
         return gameStatus.getReadOnlyProperty();
     }
-
     public ReadOnlyObjectProperty<String> getTmpAnswerShown() {
         return tmpAnswerShown;
     }
-
     public GameStatus getGameStatus() {
         return gameStatus.get();
     }
