@@ -10,6 +10,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -73,7 +74,6 @@ public class GameController {
     }
 
     private void initializeButtons() {
-//        buttons.add(new Button("test"), 0, 0);
         int i = 0;
         int j = 0;
         for (char c = 'A'; c <= 'Z'; c++) {
@@ -82,7 +82,12 @@ public class GameController {
                 i = 0;
                 j++;
             }
-            buttons.add(new LetterButton(letter), i++, j);
+            Button btn = new LetterButton(letter);
+            btn.setOnAction(event -> {
+                game.makeMove(letter.toLowerCase());
+                btn.setDisable(true);
+            });
+            buttons.add(btn, i++, j);
         }
     }
 
@@ -102,14 +107,10 @@ public class GameController {
     }
 
     private void setUpStatusLabelBindings() {
-
         System.out.println("in setUpStatusLabelBindings");
         statusLabel.setFont(Font.font("Josefin Sans", FontWeight.BOLD, 70));
         statusLabel.textProperty().bind(Bindings.format("%s", game.gameStatusProperty()));
         enterALetterLabel.textProperty().bind(Bindings.format("%s", "Enter a letter:"));
-
-        //      Used letters here
-        userInput.textProperty().bind(Bindings.format("%s", "Letters used: "));
 
 		/*	Bindings.when(
 					game.currentPlayerProperty().isNotNull()
