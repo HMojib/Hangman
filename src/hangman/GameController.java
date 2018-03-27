@@ -36,6 +36,7 @@ public class GameController {
 
     private final ExecutorService executorService;
     static Game game;
+    private ImageView[] images = new ImageView[5];
 
     public GameController(Game game) {
         this.game = game;
@@ -47,11 +48,11 @@ public class GameController {
     }
 
     @FXML
-    private HBox board ;
+    private HBox board;
     @FXML
-    private Label statusLabel ;
+    private Label statusLabel;
     @FXML
-    private Label userInput ;
+    private Label userInput;
     @FXML
     private GridPane buttons;
     @FXML
@@ -75,37 +76,34 @@ public class GameController {
 
     private void setUpImagesOnBoard() {
 
-        ImageView imv = new ImageView();
-        Image image = new Image("file:resources/images/bigRightLeg.jpg", 100, 250, true, true);
+        images[0] = new ImageView();
+        setImageViews("file:resources/images/bigRightLeg.jpg", 0);
+
+        images[1] = new ImageView();
+        setImageViews("file:resources/images/bigRightArm.jpg", 1);
+
+        images[2] = new ImageView();
+        setImageViews("file:resources/images/bigHead.jpg", 2);
+
+        images[3] = new ImageView();
+        setImageViews("file:resources/images/bigLeftArm.jpg", 3);
+
+        images[4] = new ImageView();
+        setImageViews("file:resources/images/bigLeftLeg.jpg", 4);
+
+        // TODO DELETE
+        for(int i = 1; i< 6;i++){
+            drawHangman(i);
+        }
+
+    }
+
+    private void setImageViews(String url, int index) {
+        Image image = new Image(url, 100, 250, true, true);
+        ImageView imv = images[index];
         imv.setImage(image);
         board.getChildren().add(imv);
-
-        ImageView imv2 = new ImageView();
-        Image image2 = new Image("file:resources/images/bigRightArm.jpg", 100, 250, true, true);
-        imv2.setImage(image2);
-        board.getChildren().add(imv2);
-
-        ImageView imv3 = new ImageView();
-        Image image3 = new Image("file:resources/images/bigHead.jpg", 100, 250, true, true);
-        imv3.setImage(image3);
-        board.getChildren().add(imv3);
-
-        ImageView imv4 = new ImageView();
-        Image image4 = new Image("file:resources/images/bigLeftArm.jpg", 100, 250, true, true);
-        imv4.setImage(image4);
-        board.getChildren().add(imv4);
-
-        ImageView imv5 = new ImageView();
-        Image image5 = new Image("file:resources/images/bigLeftLeg.jpg", 100, 250, true, true);
-        imv5.setImage(image5);
-        board.getChildren().add(imv5);
-
         imv.setVisible(false);
-        imv2.setVisible(false);
-        imv3.setVisible(false);
-        imv4.setVisible(false);
-        imv5.setVisible(false);
-
     }
 
     private void loadFonts() {
@@ -187,7 +185,7 @@ public class GameController {
 
         Node node = null;
 
-        switch(badMoves) {
+        switch (badMoves) {
             case 1:
                 node = board.getChildren().get(badMoves - 1);
                 node.setVisible(true);
@@ -218,7 +216,8 @@ public class GameController {
 
     @FXML
     private void newHangman() {
-        game.reset();
+        System.out.println("reset");
+
     }
 
     @FXML
@@ -227,7 +226,7 @@ public class GameController {
     }
 
 
-//    The "How to Play" and "Credits" dialogs.
+    //    The "How to Play" and "Credits" dialogs.
     @FXML
     private void howToPlay() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -262,5 +261,4 @@ public class GameController {
                 "\nSamir Matin");
         alert.showAndWait();
     }
-
 }

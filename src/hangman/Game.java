@@ -58,6 +58,7 @@ public class Game {
                 return "Game on, let's go!";
             }
         }
+
     }
 
     public Game() {
@@ -213,11 +214,6 @@ public class Game {
     }
 
     public void reset() {
-        answer = "";
-        tmpAnswer = "";
-        moves = 0;
-        correctGuess = false;
-        onStart = true;
 
     }
 
@@ -235,7 +231,7 @@ public class Game {
 
     private GameStatus checkForWinner() {
         log("in checkForWinner");
-        if(tmpAnswer.equals(answer)) {
+        if(tmpAnswer.equals(answer) && moves < numOfTries() - 1) {
             log("won");
             return GameStatus.WON;
         }
