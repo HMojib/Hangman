@@ -97,7 +97,7 @@ public class Game {
             public GameStatus computeValue() {
                 log("in computeValue");
                 GameStatus check = checkForWinner();
-                if(check != null ) {
+                if(check != null  ) {
                     return check;
                 }
 
@@ -158,6 +158,7 @@ public class Game {
             sb.append("_");
         }
         updateTmpAnswer(sb.toString());
+        System.out.println(answer);
     }
 
     private void prepLetterAndPosArray() {
@@ -227,11 +228,11 @@ public class Game {
 
     private GameStatus checkForWinner() {
         log("in checkForWinner");
-        if(tmpAnswer.equals(answer) && badMoves < NUM_TRIES - 1) {
+        if(tmpAnswer.equals(answer) && badMoves <= NUM_TRIES) {
             log("won");
             return GameStatus.WON;
         }
-        else if(badMoves == NUM_TRIES - 1) {
+        else if(badMoves == NUM_TRIES - 1 && !correctGuess) {
             badMoves++;
             log("game over");
             return GameStatus.GAME_OVER;
