@@ -139,6 +139,10 @@ public class GameController {
             btn.setOnAction(event -> {
                 game.makeMove(letter.toLowerCase());
                 drawHangman(game.getBadMoves());
+                if (game.getGameStatus() == Game.GameStatus.GAME_OVER ||
+                        game.getGameStatus() == Game.GameStatus.WON) {
+                    buttons.setVisible(false);
+                }
                 btn.setDisable(true);
             });
             buttons.add(btn, i++, j);
@@ -231,6 +235,7 @@ public class GameController {
         for(ImageView imv : imageViews){
             imv.setVisible(false);
         }
+        buttons.setVisible(true);
         ObservableList<Node> childrens = buttons.getChildren();
         for(Node node : childrens){
            node.setDisable(false);
