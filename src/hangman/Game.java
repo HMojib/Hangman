@@ -19,8 +19,7 @@ public class Game {
     private static String answer;
     private String tmpAnswer;
     private String[] letterAndPosArray;
-    private int moves;
-    int badMoves;
+    private int badMoves;
     private boolean correctGuess;
     private boolean onStart = true;
     private final ReadOnlyObjectWrapper<GameStatus> gameStatus;
@@ -83,7 +82,6 @@ public class Game {
         setRandomWord();
         prepTmpAnswer();
         prepLetterAndPosArray();
-        moves = 0;
 
         gameState.setValue(false); // initial state
         createGameStatusBinding();
@@ -113,20 +111,13 @@ public class Game {
                     return GameStatus.GOOD_GUESS;
                 }
                 else{
-                    moves++;
+                    badMoves++;
                     log("bad guess");
-
-//                    TODO: how do i call drawHangman() in GameController.java
-                    printHangman(moves);
                     return GameStatus.BAD_GUESS;
                 }
             }
         };
         gameStatus.bind(gameStatusBinding);
-    }
-
-    void printHangman(int moves) {
-//        GameController.drawHangman(moves);
     }
 
     public ReadOnlyObjectProperty<GameStatus> gameStatusProperty() {
@@ -222,17 +213,18 @@ public class Game {
         System.out.println(s);
     }
 
-    public int getMoves(){
-        return moves;
+    public int getBadMoves() {
+        return badMoves;
     }
 
     private GameStatus checkForWinner() {
         log("in checkForWinner");
-        if(tmpAnswer.equals(answer) && moves < NUM_TRIES - 1) {
+        if(tmpAnswer.equals(answer) && badMoves < NUM_TRIES - 1) {
             log("won");
             return GameStatus.WON;
         }
-        else if(moves == NUM_TRIES - 1) {
+        else if(badMoves == NUM_TRIES - 1) {
+            badMoves++;
             log("game over");
             return GameStatus.GAME_OVER;
         }

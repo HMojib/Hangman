@@ -40,7 +40,7 @@ public class GameController {
     private static final String IMAGE_PATH = "file:resources/images/";
 
     private static final String IMAGE_RIGHTLEG = "bigRightLeg.jpg";
-    private static final String IMAGE_RIGHTARM = "bigRightLeg.jpg";
+    private static final String IMAGE_RIGHTARM = "bigRightArm.jpg";
     private static final String IMAGE_HEAD = "bigHead.jpg";
     private static final String IMAGE_LEFTARM = "bigLeftArm.jpg";
     private static final String IMAGE_LEFTLEG = "bigLeftLeg.jpg";
@@ -104,9 +104,7 @@ public class GameController {
             imageViews[i] = imv;
             board.getChildren().add(imageViews[i]);
         }
-        for(int i = 1; i< 6;i++){
-            drawHangman(i);
-        }
+
     }
 
     private void loadFonts() {
@@ -131,6 +129,7 @@ public class GameController {
             Button btn = new LetterButton(letter);
             btn.setOnAction(event -> {
                 game.makeMove(letter.toLowerCase());
+                drawHangman(game.getBadMoves());
                 btn.setDisable(true);
             });
             buttons.add(btn, i++, j);
@@ -158,7 +157,7 @@ public class GameController {
 
     private void setUpGuessWordLabelBindings() {
         System.out.println("in setUpGuessWordLabelBindings");
-        guessWordLabel.textProperty().bind(Bindings.format("%s", game.getTmpAnswerShown()));
+        guessWordLabel.textProperty().bind(game.getTmpAnswerShown());
     }
 
     private void setUpStatusLabelBindings() {
@@ -185,35 +184,35 @@ public class GameController {
             With each increment in the number of bad moves,
             another image has their visibility set to true, showing on the board.
          */
-
-        Node node = null;
-
-        switch (badMoves) {
-            case 1:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 2:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 3:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 4:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 5:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-        }
+        System.out.println("Bad Moves: " + badMoves);
+        if (badMoves > 0)
+            imageViews[badMoves - 1].setVisible(true);
+//        switch (badMoves) {
+//
+//            case 1:
+//
+//                break;
+//
+//            case 2:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 3:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 4:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 5:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//        }
 
     }
 
