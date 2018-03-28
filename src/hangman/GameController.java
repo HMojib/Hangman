@@ -36,10 +36,18 @@ public class GameController {
 
     private final ExecutorService executorService;
     static Game game;
-    private ImageView[] images = new ImageView[5];
+    private ImageView[] imageViews;
+    private static final String IMAGE_PATH = "file:resources/images/";
+
+    private static final String IMAGE_RIGHTLEG = "bigRightLeg.jpg";
+    private static final String IMAGE_RIGHTARM = "bigRightLeg.jpg";
+    private static final String IMAGE_HEAD = "bigHead.jpg";
+    private static final String IMAGE_LEFTARM = "bigLeftArm.jpg";
+    private static final String IMAGE_LEFTLEG = "bigLeftLeg.jpg";
 
     public GameController(Game game) {
         this.game = game;
+        imageViews = new ImageView[Game.NUM_TRIES];
         executorService = Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r);
             thread.setDaemon(true);
@@ -66,7 +74,7 @@ public class GameController {
     public void initialize() throws IOException {
         statusLabel.setText(Game.GameStatus.OPEN.toString());
         System.out.println("in initialize");
-        setUpImagesOnBoard();
+        setUpImageViews();
         loadFonts();
         setUpStatusLabelBindings();
         setUpGuessWordLabelBindings();
@@ -74,36 +82,31 @@ public class GameController {
 
     }
 
-    private void setUpImagesOnBoard() {
-
-        images[0] = new ImageView();
-        setImageViews("file:resources/images/bigRightLeg.jpg", 0);
-
-        images[1] = new ImageView();
-        setImageViews("file:resources/images/bigRightArm.jpg", 1);
-
-        images[2] = new ImageView();
-        setImageViews("file:resources/images/bigHead.jpg", 2);
-
-        images[3] = new ImageView();
-        setImageViews("file:resources/images/bigLeftArm.jpg", 3);
-
-        images[4] = new ImageView();
-        setImageViews("file:resources/images/bigLeftLeg.jpg", 4);
-
-        // TODO DELETE
+    private void setUpImageViews() {
+        for (int i = 0, size = imageViews.length; i < size; i++) {
+            ImageView imv = new ImageView();
+            String imageName = "";
+            switch (i) {
+                case 0: imageName = IMAGE_RIGHTLEG;
+                    break;
+                case 1: imageName = IMAGE_RIGHTARM;
+                    break;
+                case 2: imageName = IMAGE_HEAD;
+                    break;
+                case 3: imageName = IMAGE_LEFTARM;
+                    break;
+                case 4: imageName = IMAGE_LEFTLEG;
+            }
+            Image image = new Image(IMAGE_PATH + imageName,
+                    250, 250, true, true);
+            imv.setImage(image);
+            imv.setVisible(false);
+            imageViews[i] = imv;
+            board.getChildren().add(imageViews[i]);
+        }
         for(int i = 1; i< 6;i++){
             drawHangman(i);
         }
-
-    }
-
-    private void setImageViews(String url, int index) {
-        Image image = new Image(url, 100, 250, true, true);
-        ImageView imv = images[index];
-        imv.setImage(image);
-        board.getChildren().add(imv);
-        imv.setVisible(false);
     }
 
     private void loadFonts() {
