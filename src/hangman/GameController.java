@@ -37,10 +37,18 @@ public class GameController {
 
     private final ExecutorService executorService;
     static Game game;
-    private ImageView[] images = new ImageView[5];
+    private ImageView[] imageViews;
+    private static final String IMAGE_PATH = "file:resources/images/";
+
+    private static final String IMAGE_RIGHTLEG = "bigRightLeg.jpg";
+    private static final String IMAGE_RIGHTARM = "bigRightArm.jpg";
+    private static final String IMAGE_HEAD = "bigHead.jpg";
+    private static final String IMAGE_LEFTARM = "bigLeftArm.jpg";
+    private static final String IMAGE_LEFTLEG = "bigLeftLeg.jpg";
 
     public GameController(Game game) {
         this.game = game;
+        imageViews = new ImageView[Game.NUM_TRIES];
         executorService = Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r);
             thread.setDaemon(true);
@@ -67,7 +75,7 @@ public class GameController {
     public void initialize() throws IOException {
         statusLabel.setText(Game.GameStatus.OPEN.toString());
         System.out.println("in initialize");
-        setUpImagesOnBoard();
+        setUpImageViews();
         loadFonts();
         setUpStatusLabelBindings();
         setUpGuessWordLabelBindings();
@@ -75,31 +83,29 @@ public class GameController {
 
     }
 
-    private void setUpImagesOnBoard() {
+    private void setUpImageViews() {
+        for (int i = 0, size = imageViews.length; i < size; i++) {
+            ImageView imv = new ImageView();
+            String imageName = "";
+            switch (i) {
+                case 0: imageName = IMAGE_RIGHTLEG;
+                    break;
+                case 1: imageName = IMAGE_RIGHTARM;
+                    break;
+                case 2: imageName = IMAGE_HEAD;
+                    break;
+                case 3: imageName = IMAGE_LEFTARM;
+                    break;
+                case 4: imageName = IMAGE_LEFTLEG;
+            }
+            Image image = new Image(IMAGE_PATH + imageName,
+                    250, 250, true, true);
+            imv.setImage(image);
+            imv.setVisible(false);
+            imageViews[i] = imv;
+            board.getChildren().add(imageViews[i]);
+        }
 
-        images[0] = new ImageView();
-        setImageViews("file:resources/images/bigRightLeg.jpg", 0);
-
-        images[1] = new ImageView();
-        setImageViews("file:resources/images/bigRightArm.jpg", 1);
-
-        images[2] = new ImageView();
-        setImageViews("file:resources/images/bigHead.jpg", 2);
-
-        images[3] = new ImageView();
-        setImageViews("file:resources/images/bigLeftArm.jpg", 3);
-
-        images[4] = new ImageView();
-        setImageViews("file:resources/images/bigLeftLeg.jpg", 4);
-
-    }
-
-    private void setImageViews(String url, int index) {
-        Image image = new Image(url, 100, 250, true, true);
-        ImageView imv = images[index];
-        imv.setImage(image);
-        board.getChildren().add(imv);
-        imv.setVisible(false);
     }
 
     private void loadFonts() {
@@ -124,6 +130,7 @@ public class GameController {
             Button btn = new LetterButton(letter);
             btn.setOnAction(event -> {
                 game.makeMove(letter.toLowerCase());
+                drawHangman(game.getBadMoves());
                 btn.setDisable(true);
             });
             buttons.add(btn, i++, j);
@@ -152,7 +159,7 @@ public class GameController {
 
     private void setUpGuessWordLabelBindings() {
         System.out.println("in setUpGuessWordLabelBindings");
-        guessWordLabel.textProperty().bind(Bindings.format("%s", game.getTmpAnswerShown()));
+        guessWordLabel.textProperty().bind(game.getTmpAnswerShown());
     }
 
     private void setUpStatusLabelBindings() {
@@ -179,35 +186,35 @@ public class GameController {
             With each increment in the number of bad moves,
             another image has their visibility set to true, showing on the board.
          */
-
-        Node node = null;
-
-        switch (badMoves) {
-            case 1:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 2:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 3:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 4:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-
-            case 5:
-                node = board.getChildren().get(badMoves - 1);
-                node.setVisible(true);
-                break;
-        }
+        System.out.println("Bad Moves: " + badMoves);
+        if (badMoves > 0)
+            imageViews[badMoves - 1].setVisible(true);
+//        switch (badMoves) {
+//
+//            case 1:
+//
+//                break;
+//
+//            case 2:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 3:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 4:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//
+//            case 5:
+//                node = board.getChildren().get(badMoves - 1);
+//                node.setVisible(true);
+//                break;
+//        }
 
     }
 
