@@ -27,6 +27,7 @@ public class Game {
     private final ReadOnlyObjectWrapper<String> tmpAnswerShown;
     private ObjectProperty<Boolean> gameState = new ReadOnlyObjectWrapper<Boolean>();
     private List<String> dictionary = new ArrayList<String>();
+    public static final int NUM_TRIES = 5;
 
 
     public enum GameStatus {
@@ -217,10 +218,6 @@ public class Game {
 
     }
 
-    private int numOfTries() {
-        return 5; // TODO, fix me
-    }
-
     public static void log(String s) {
         System.out.println(s);
     }
@@ -231,11 +228,11 @@ public class Game {
 
     private GameStatus checkForWinner() {
         log("in checkForWinner");
-        if(tmpAnswer.equals(answer) && moves < numOfTries() - 1) {
+        if(tmpAnswer.equals(answer) && moves < NUM_TRIES - 1) {
             log("won");
             return GameStatus.WON;
         }
-        else if(moves == numOfTries() - 1) {
+        else if(moves == NUM_TRIES - 1) {
             log("game over");
             return GameStatus.GAME_OVER;
         }
