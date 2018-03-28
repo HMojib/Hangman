@@ -220,6 +220,9 @@ public class GameController {
 
     @FXML
     private void newHangman() {
+        for(ImageView imv : imageViews){
+            imv.setVisible(false);
+        }
         ObservableList<Node> childrens = buttons.getChildren();
         for(Node node : childrens){
            node.setDisable(false);

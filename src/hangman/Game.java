@@ -213,7 +213,6 @@ public class Game {
         setRandomWord();
         prepTmpAnswer();
         prepLetterAndPosArray();
-        moves = 0;
         gameState.setValue(false); // initial state
         createGameStatusBinding();
     }
