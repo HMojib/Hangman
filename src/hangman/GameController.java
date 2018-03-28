@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -100,7 +101,14 @@ public class GameController {
             }
             Image image = new Image(IMAGE_PATH + imageName,
                     250, 250, true, true);
+//            For dropshadow effect on image
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setRadius(8.0);
+            dropShadow.setOffsetX(5.0);
+            dropShadow.setOffsetY(6.0);
+
             imv.setImage(image);
+            imv.setEffect(dropShadow);
             imv.setVisible(false);
             imageViews[i] = imv;
             board.getChildren().add(imageViews[i]);
@@ -249,7 +257,7 @@ public class GameController {
 
         alert.setTitle("How to play Hangman");
         alert.setHeaderText(null);
-        alert.setContentText("Guess the letters of the secret word by typing in a letter in the text box. " +
+        alert.setContentText("Guess the letters of the secret word by choosing a letter in the alphabet. " +
                 "\n\n - Each correct guess reveals where your letter is in the word." +
                 "\n\n - Each wrong guess leads you closer to THE SHADOW REALM.");
         alert.showAndWait();
