@@ -257,7 +257,7 @@ public class GameController {
 
         alert.setTitle("How to play Hangman");
         alert.setHeaderText(null);
-        alert.setContentText("Guess the letters of the secret word by typing in a letter in the text box. " +
+        alert.setContentText("Guess the letters of the secret word by choosing a letter in the alphabet. " +
                 "\n\n - Each correct guess reveals where your letter is in the word." +
                 "\n\n - Each wrong guess leads you closer to THE SHADOW REALM.");
         alert.showAndWait();
