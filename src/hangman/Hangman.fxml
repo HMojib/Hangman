@@ -52,12 +52,15 @@
             <GridPane fx:id="buttons" hgap="10" vgap="10" alignment="CENTER">
                 <!--Buttons will be dynamically generated here.-->
             </GridPane>
-
+            <Button fx:id="startButton" text="Start New Game"
+                    onAction="#newHangman"/>
             <Label fx:id="userInput">
+
                 <styleClass>
                     <String fx:value="status"/>
                 </styleClass>
             </Label>
+
         </VBox>
     </bottom>
 

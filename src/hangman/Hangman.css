@@ -39,6 +39,10 @@ Label {
 	-fx-font-weight: bold;
 }
 
+#buttons{
+	-fx-padding: 0px 0px 20px 0px;
+}
+
 #enterALetterLabel {
 	-fx-padding: 0px 30px 0px 0px;
 }
@@ -51,4 +55,10 @@ Label {
 	-fx-padding: 0px 50px 50px 50px;
 	-fx-font-size: 16pt;
 	-fx-text-fill: #71717a;
+}
+
+#startButton{
+	-fx-padding: 20px 20px 20px 20px;
+	-fx-font-size: 16pt;
+	-fx-text-fill: black;
 }

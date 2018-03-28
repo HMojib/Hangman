@@ -214,7 +214,16 @@ public class Game {
     }
 
     public void reset() {
-
+        badMoves = 0;
+        correctGuess = false;
+        onStart = true;
+        prepDictionary();
+        setRandomWord();
+        prepTmpAnswer();
+        prepLetterAndPosArray();
+        moves = 0;
+        gameState.setValue(false); // initial state
+        createGameStatusBinding();
     }
 
     private int numOfTries() {

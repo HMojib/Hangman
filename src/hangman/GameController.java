@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadFactory;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -91,11 +92,6 @@ public class GameController {
         images[4] = new ImageView();
         setImageViews("file:resources/images/bigLeftLeg.jpg", 4);
 
-        // TODO DELETE
-        for(int i = 1; i< 6;i++){
-            drawHangman(i);
-        }
-
     }
 
     private void setImageViews(String url, int index) {
@@ -132,6 +128,7 @@ public class GameController {
             });
             buttons.add(btn, i++, j);
         }
+
     }
 
 //    private void addButtonListener() {
@@ -216,7 +213,11 @@ public class GameController {
 
     @FXML
     private void newHangman() {
-        System.out.println("reset");
+        ObservableList<Node> childrens = buttons.getChildren();
+        for(Node node : childrens){
+           node.setDisable(false);
+        }
+        game.reset();
 
     }
 
